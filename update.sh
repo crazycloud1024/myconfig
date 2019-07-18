@@ -1,2 +1,2 @@
-cd .fzf && git pull && cd - && pwd
-cd tmux-config && git pull && pwd
+cd .fzf && git pull && cd -
+cd tmux-config && git pull && cd -
