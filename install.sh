@@ -22,6 +22,8 @@ fi
 if [[ $b -eq '1' ]];then
     yum remove -y vim
     yum install -y zsh python-software-properties software-properties-common neovim tmux
+    curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
     cd ./tmux-config && sh install.sh
     mv ./tmux-config/tmux/tmux/tmux.conf ~/.tmux.conf
