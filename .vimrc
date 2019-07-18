@@ -1,27 +1,29 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 call plug#begin()
-Plug 'VundleVim/Vundle.vim'
 Plug 'jiangmiao/auto-pairs'  " 自动括号
 Plug 'ervandew/supertab'
 Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'tpope/vim-fugitive'
 Plug 'mileszs/ack.vim'
 Plug 'w0rp/ale'
 Plug 'avakhov/vim-yaml'
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins'  }
-Plug 'zchee/deoplete-jedi'
 Plug 'tmhedberg/SimpylFold' " 代码折叠 zo:打开  zc：关闭
 Plug 'davidhalter/jedi-vim'  " go-to
 Plug 'scrooloose/nerdcommenter'
 Plug 'SirVer/ultisnips'   " 补全代码块
 Plug 'honza/vim-snippets'  " 代码块
+Plug 'kien/ctrlp.vim'
+Plug 'tell-k/vim-autopep8'
+Plug '~/.fzf'
+Plug 'Yggdroot/indentLine'  "竖线
+
 "All of your Plugins must be added before the following line
 call plug#end()            " required
 filetype plugin indent on    " required
+
 
 " basic
 let mapleader = ","
@@ -46,22 +48,22 @@ set foldlevel=99
 set backspace=indent,eol,start
 set encoding=utf-8
 
-colorscheme molokai
 set guifont=Monaco:h14
 set completeopt=menu
 
+
 " jedi-vim
-" disable autocompletion, cause we use deoplete for completion
-let g:jedi#completions_enabled = 0
+let g:jedi#completions_enabled = 1
 " open the go-to function in split, not another buffer
 let g:jedi#use_splits_not_buffers = "right""
 
-" snypt
-" Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
+" snipt
+" " Trigger configuration. Do not use <tab> if you use
+" https://github.com/Valloric/YouCompleteMe.
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-
+" "
 
 "Set space indent for python files
 autocmd Filetype python setlocal expandtab tabstop=4 shiftwidth=4 softtabstop=4
@@ -76,20 +78,19 @@ nnoremap <c-k> <c-w>k
 nnoremap <c-l> <c-w>l
 nnoremap <c-h> <c-w>h
 
-" deplete
-let g:deoplete#enable_at_startup = 1
-
 " easier moving of code blocks
 vnoremap < <gv
 vnoremap > >gv
-
 
 " nerdtree
 nnoremap <F2> :NERDTreeToggle<CR>
 let NERDTreeIgnore = ['\.pyc$', '__pycache__', '\.swp$']
 
+" pep8
+autocmd FileType python noremap <buffer> <F9> :call Autopep8()<CR>
 
-" tagbar
+
+"tagbar
 nnoremap <F8> :TagbarToggle<CR>
 let g:gagbar_autofocus = 1
 
@@ -100,19 +101,73 @@ nnoremap <C-c>m :bn<CR>
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#buffer_nr_show = 1
 let g:airline_theme='bubblegum'
+set laststatus=2  "永远显示状态栏
+set t_Co=256 "
 
 
 " ack
 let g:ackprg = 'ag --nogroup --nocolor --column'
 
-
 " ale
-"let g:ale_linters_explicit = 1 " TODO: bug, new buffer will not load linters
 let b:ale_linters = {'javascript': ['eslint'], 'python': ['pyflakes', 'flake8']}
 let g:ale_fixers = {'javascript': ['eslint'], 'python': ['yapf']}
-let g:ale_echo_msg_format = '[%linter%] %code: %%s'
 let g:ale_lint_on_text_changed = 'normal'
 let g:ale_lint_on_insert_leave = 1
-let g:airline#extensions#ale#enabled = 1
-let g:ale_python_flake8_options = '--ignore=E501,E251,E262,E127,E125,E305,W503'
-nmap <leader>y <Plug>(ale_fix)
+"始终开启标志列
+let g:ale_sign_column_always = 1
+let g:ale_set_highlights = 0
+"自定义error和warning图标
+let g:ale_sign_error = '✗'
+let g:ale_sign_warning = '⚡'
+"在vim自带的状态栏中整合ale
+let g:ale_statusline_format = ['✗ %d', '⚡ %d', '✔ OK']
+"显示Linter名称,出错或警告等相关信息
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+"普通模式下，sp前往上一个错误或警告，sn前往下一个错误或警告
+nmap sp <Plug>(ale_previous_wrap)
+nmap sn <Plug>(ale_next_wrap)
+"<Leader>s触发/关闭语法检查
+nmap <Leader>s :ALEToggle<CR>
+"<Leader>e查看错误或警告的详细信息
+nmap <Leader>e :ALEDetail<CR>
+  
+
+"line
+let g:indentLine_char_list = ['|', '¦', '┆', '┊']
+" Vim
+let g:indentLine_color_term = 239
+
+" none X terminal
+let g:indentLine_color_tty_light = 7 " (default: 4)
+let g:indentLine_color_dark = 1 " (default: 2)
+
+
+"""""""""""""""""""""
+map <F5> :call CompileRunGcc()<CR>
+func! CompileRunGcc()
+        exec "w"
+if &filetype == 'c'
+            exec "!g++ % -o %<"
+            exec "!time ./%<"
+elseif &filetype == 'cpp'
+            exec "!g++ % -o %<"
+            exec "!time ./%<"
+elseif &filetype == 'java'
+            exec "!javac %"
+            exec "!time java %<"
+elseif &filetype == 'sh'
+            :!time bash %
+elseif &filetype == 'python'
+            exec "!time python2.7 %"
+elseif &filetype == 'html'
+            exec "!firefox % &"
+elseif &filetype == 'go'
+     "       exec "!go build %<"
+            exec "!time go run %"
+elseif &filetype == 'mkd'
+            exec "!~/.vim/markdown.pl % > %.html &"
+            exec "!firefox %.html &"
+endif
+endfunc 
