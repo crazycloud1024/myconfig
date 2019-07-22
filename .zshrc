@@ -68,7 +68,7 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git docker docker-compose vagrant z kubectl helm)
+plugins=(git docker-compose docker z)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -97,13 +97,21 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
-export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles
-export PATH="/usr/local/opt/openssl/bin:$PATH"
 
-alias goto101="ssh root@192.168.56.101"
-alias goto102="ssh root@192.168.56.102"
+# mac pip 指定源用
+# export HOMEBREW_BOTTLE_DOMAIN=https://mirrors.tuna.tsinghua.edu.cn/homebrew-bottles
+# export PATH="/usr/local/opt/openssl/bin:$PATH"
+
+# kubectl 切换默认namespace
+alias kcd='kubectl config set-context $(kubectl config current-context) --namespace'
+
+alias goto137="ssh root@192.168.137.3"
+alias goto100="ssh root@192.168.137.100"
+alias goto101="ssh root@192.168.137.101"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 #export PYENV_ROOT="$HOME/.pyenv"
 #eval "$(pyenv init -)"
 #eval "$(pyenv virtualenv-init -)"
+fpath=(~/.zsh/completion $fpath)
+autoload -Uz compinit && compinit -u
