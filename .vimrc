@@ -18,7 +18,9 @@ Plug 'honza/vim-snippets'  " 代码块
 Plug 'kien/ctrlp.vim'
 Plug 'tell-k/vim-autopep8'
 Plug '~/.fzf'
+Plug 'fatih/vim-go' "go
 Plug 'Yggdroot/indentLine'  "竖线
+Plug 'voldikss/vim-translate-me'
 
 "All of your Plugins must be added before the following line
 call plug#end()            " required
@@ -27,7 +29,8 @@ filetype plugin indent on    " required
 
 " basic
 let mapleader = ","
-syntax on "语法支持
+syntax on "语法高亮
+filetype on "检查文件类型
 set laststatus=2 "始终显示状态栏
 set smarttab "智能制表符
 set autoindent "自动缩进
@@ -55,7 +58,7 @@ set completeopt=menu
 " jedi-vim
 let g:jedi#completions_enabled = 1
 " open the go-to function in split, not another buffer
-let g:jedi#use_splits_not_buffers = "right""
+"let g:jedi#use_splits_not_buffers = "right""
 
 " snipt
 " " Trigger configuration. Do not use <tab> if you use
@@ -143,7 +146,15 @@ let g:indentLine_color_term = 239
 let g:indentLine_color_tty_light = 7 " (default: 4)
 let g:indentLine_color_dark = 1 " (default: 2)
 
-
+" go
+let g:go_highlight_functions = 1
+let g:go_highlight_method = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
+let g:go_version_warning = 0
+ 
+ 
 """""""""""""""""""""
 map <F5> :call CompileRunGcc()<CR>
 func! CompileRunGcc()
@@ -164,10 +175,27 @@ elseif &filetype == 'python'
 elseif &filetype == 'html'
             exec "!firefox % &"
 elseif &filetype == 'go'
-     "       exec "!go build %<"
+            exec "!go run %<"
+     "      exec "!go build %<"
             exec "!time go run %"
 elseif &filetype == 'mkd'
             exec "!~/.vim/markdown.pl % > %.html &"
             exec "!firefox %.html &"
 endif
 endfunc 
+
+"""""""""""""""""""
+" <Leader>t 翻译光标下的文本，在命令行回显
+nmap <silent> <Leader>t <Plug>Translate
+vmap <silent> <Leader>t <Plug>TranslateV
+" Leader>w 翻译光标下的文本，在窗口中显示
+nmap <silent> <Leader>w <Plug>TranslateW
+vmap <silent> <Leader>w <Plug>TranslateWV
+" Leader>r 替换光标下的文本为翻译内容
+nmap <silent> <Leader>r <Plug>TranslateR
+vmap <silent> <Leader>r <Plug>TranslateRV
+hi def link vtmQuery             Identifier
+hi def link vtmParaphrase        Statement
+hi def link vtmPhonetic          Special
+hi def link vtmExplain           Comment
+hi def link vtmPopupNormal       NormalFloat
