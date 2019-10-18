@@ -7,20 +7,21 @@ Plug 'scrooloose/nerdtree'
 Plug 'majutsushi/tagbar'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
-Plug 'mileszs/ack.vim'
 Plug 'w0rp/ale'
 Plug 'avakhov/vim-yaml'
 Plug 'tmhedberg/SimpylFold' " 代码折叠 zo:打开  zc：关闭
 Plug 'davidhalter/jedi-vim'  " go-to
-Plug 'scrooloose/nerdcommenter'
+Plug 'scrooloose/nerdcommenter' "添加注释
 Plug 'SirVer/ultisnips'   " 补全代码块
 Plug 'honza/vim-snippets'  " 代码块
-Plug 'kien/ctrlp.vim'
+Plug 'kien/ctrlp.vim' "搜索
 Plug 'tell-k/vim-autopep8'
 Plug '~/.fzf'
 Plug 'fatih/vim-go' "go
 Plug 'Yggdroot/indentLine'  "竖线
 Plug 'voldikss/vim-translate-me'
+Plug 'samoshkin/vim-mergetool'
+Plug 'pangloss/vim-javascript'
 
 "All of your Plugins must be added before the following line
 call plug#end()            " required
@@ -31,7 +32,6 @@ filetype plugin indent on    " required
 let mapleader = ","
 syntax on "语法高亮
 filetype on "检查文件类型
-set laststatus=2 "始终显示状态栏
 set smarttab "智能制表符
 set autoindent "自动缩进
 set smartindent "只能缩进
@@ -96,6 +96,33 @@ autocmd FileType python noremap <buffer> <F9> :call Autopep8()<CR>
 "tagbar
 nnoremap <F8> :TagbarToggle<CR>
 let g:gagbar_autofocus = 1
+let g:tagbar_type_go = {
+    \ 'ctagstype' : 'go',
+    \ 'kinds'     : [
+        \ 'p:package',
+        \ 'i:imports:1',
+        \ 'c:constants',
+        \ 'v:variables',
+        \ 't:types',
+        \ 'n:interfaces',
+        \ 'w:fields',
+        \ 'e:embedded',
+        \ 'm:methods',
+        \ 'r:constructor',
+        \ 'f:functions'
+    \ ],
+    \ 'sro' : '.',
+    \ 'kind2scope' : {
+        \ 't' : 'ctype',
+        \ 'n' : 'ntype'
+    \ },
+    \ 'scope2kind' : {
+        \ 'ctype' : 't',
+        \ 'ntype' : 'n'
+    \ },
+    \ 'ctagsbin'  : 'gotags',
+    \ 'ctagsargs' : '-sort -silent'
+\ }
 
 
 " vim-airline
@@ -154,7 +181,11 @@ let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 let g:go_version_warning = 0
  
- 
+"
+let g:mergetool_layout = 'mr'
+let g:mergetool_prefer_revision = 'local'
+nmap <leader>mt <plug>(MergetoolToggle)
+
 """""""""""""""""""""
 map <F5> :call CompileRunGcc()<CR>
 func! CompileRunGcc()
@@ -171,7 +202,7 @@ elseif &filetype == 'java'
 elseif &filetype == 'sh'
             :!time bash %
 elseif &filetype == 'python'
-            exec "!time python2.7 %"
+            exec "!time python3 %"
 elseif &filetype == 'html'
             exec "!firefox % &"
 elseif &filetype == 'go'

@@ -8,7 +8,8 @@ export ZSH="/root/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+#ZSH_THEME="robbyrussell"
+ZSH_THEME="ys"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -68,7 +69,7 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git docker-compose docker z)
+plugins=(docker git docker-compose z pipenv pyenv)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -104,14 +105,28 @@ source $ZSH/oh-my-zsh.sh
 
 # kubectl 切换默认namespace
 alias kcd='kubectl config set-context $(kubectl config current-context) --namespace'
-
+# 跳转服务器
 alias goto137="ssh root@192.168.137.3"
 alias goto100="ssh root@192.168.137.100"
-alias goto101="ssh root@192.168.137.101"
-
+#alias python='python3'
+#alias pip='pip3'
+# 自定义命令
+alias sd="sh /git/tools/docker_exec.sh"
+# 添加fzf到PATH
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-#export PYENV_ROOT="$HOME/.pyenv"
-#eval "$(pyenv init -)"
-#eval "$(pyenv virtualenv-init -)"
-fpath=(~/.zsh/completion $fpath)
-autoload -Uz compinit && compinit -u
+# pyenv virtualenv
+export PATH="$HOME/.pyenv/bin:$PATH"
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+# go and goenv path
+export GOROOT="/usr/local/go"
+export GOENV_ROOT="$HOME/.goenv"
+export PATH="$GOENV_ROOT/bin:$PATH"
+eval "$(goenv init -)"
+export PATH="$GOROOT/bin:$PATH"
+export PATH="$GOPATH/bin:$PATH"
+# nvm
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
