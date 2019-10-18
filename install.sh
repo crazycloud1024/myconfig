@@ -1,5 +1,4 @@
 #!/bin/sh
-
 a=`apt` 
 b=`yum`
 
