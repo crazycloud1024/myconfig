@@ -8,8 +8,8 @@ export ZSH="/root/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-#ZSH_THEME="robbyrussell"
-ZSH_THEME="ys"
+ZSH_THEME="robbyrussell"
+#ZSH_THEME="ys"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -104,7 +104,7 @@ source $ZSH/oh-my-zsh.sh
 # export PATH="/usr/local/opt/openssl/bin:$PATH"
 
 # kubectl 切换默认namespace
-alias kcd='kubectl config set-context $(kubectl config current-context) --namespace'
+alias kcdn='kubectl config set-context $(kubectl config current-context) --namespace'
 # 跳转服务器
 alias goto137="ssh root@192.168.137.3"
 alias goto100="ssh root@192.168.137.100"
@@ -114,8 +114,12 @@ alias goto100="ssh root@192.168.137.100"
 alias sd="sh /git/tools/docker_exec.sh"
 # 添加fzf到PATH
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# virtualenvwrapper
+source /usr/local/bin/virtualenvwrapper.sh
+export WORKON_HOME=~/.venv
 # pyenv virtualenv
 export PATH="$HOME/.pyenv/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
@@ -130,3 +134,5 @@ export PATH="$GOPATH/bin:$PATH"
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# pip 补全
+eval "`pip completion --zsh`"
