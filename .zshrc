@@ -2,12 +2,8 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/root/.oh-my-zsh"
+export ZSH="/${HOME}/.oh-my-zsh"
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
 ZSH_THEME="robbyrussell"
 #ZSH_THEME="ys"
 
@@ -28,10 +24,10 @@ ZSH_THEME="robbyrussell"
 # DISABLE_AUTO_UPDATE="true"
 
 # Uncomment the following line to automatically update without prompting.
-# DISABLE_UPDATE_PROMPT="true"
+ DISABLE_UPDATE_PROMPT="true"
 
 # Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
+ export UPDATE_ZSH_DAYS=13
 
 # Uncomment the following line if pasting URLs and other text is messed up.
 # DISABLE_MAGIC_FUNCTIONS=true
@@ -67,9 +63,8 @@ ZSH_THEME="robbyrussell"
 # Which plugins would you like to load?
 # Standard plugins can be found in ~/.oh-my-zsh/plugins/*
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(docker git docker-compose z pipenv pyenv)
+plugins=(docker git docker-compose z virtualenvwrapper pyenv)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -107,7 +102,7 @@ source $ZSH/oh-my-zsh.sh
 alias kcdn='kubectl config set-context $(kubectl config current-context) --namespace'
 # 跳转服务器
 alias goto137="ssh root@192.168.137.3"
-alias goto100="ssh root@192.168.137.100"
+alias goto166="ssh root@192.168.137.166"
 #alias python='python3'
 #alias pip='pip3'
 # 自定义命令
@@ -116,7 +111,7 @@ alias sd="sh /git/tools/docker_exec.sh"
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 # virtualenvwrapper
 source /usr/local/bin/virtualenvwrapper.sh
-export WORKON_HOME=~/.venv
+export WORKON_HOME=~/.virtualenvs
 # pyenv virtualenv
 export PATH="$HOME/.pyenv/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
@@ -124,15 +119,16 @@ export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 # go and goenv path
-export GOROOT="/usr/local/go"
-export GOENV_ROOT="$HOME/.goenv"
-export PATH="$GOENV_ROOT/bin:$PATH"
-eval "$(goenv init -)"
-export PATH="$GOROOT/bin:$PATH"
-export PATH="$GOPATH/bin:$PATH"
+#export GOROOT="/usr/local/go"
+#export GOENV_ROOT="$HOME/.goenv"
+#export PATH="$GOENV_ROOT/bin:$PATH"
+#eval "$(goenv init -)"
+#export PATH="$GOROOT/bin:$PATH"
+#export PATH="$GOPATH/bin:$PATH"
 # nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 # pip 补全
 eval "`pip completion --zsh`"
+export GIT_SSL_NO_VERIFY=true
